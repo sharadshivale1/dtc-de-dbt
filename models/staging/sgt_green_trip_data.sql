@@ -2,18 +2,18 @@
 
 select 
     -- identifiers
-    {{ dbt_utils.generate_surrogate_key(['vendorid', 'tpep_pickup_datetime']) }} as tripid,
+    {{ dbt_utils.generate_surrogate_key(['vendorid', 'lpep_pickup_datetime']) }} as tripid,
     cast(vendorid as integer) as vendorid,
     cast(ratecodeid as integer) as ratecodeid,
     cast(pulocationid as integer) as  pickup_locationid,
     cast(dolocationid as integer) as dropoff_locationid,
     
     -- timestamps
-    cast(tpep_pickup_datetime as timestamp) as pickup_datetime,
-    cast(tpep_dropoff_datetime as timestamp) as dropoff_datetime,
+    cast(lpep_pickup_datetime as timestamp) as pickup_datetime,
+    cast(lpep_dropoff_datetime as timestamp) as dropoff_datetime,
     
     -- trip info
-    cast(store_and_fwd_flag as string) as store_and_fwd_flag,
+    store_and_fwd_flag,
     cast(passenger_count as integer) as passenger_count,
     cast(trip_distance as numeric) as trip_distance,
     -- yellow cabs are always street-hail
@@ -32,7 +32,7 @@ select
     {{get_payment_type_description('payment_type')}} as payment_description,
     cast(congestion_surcharge as numeric) as congestion_surcharge
 
- from {{ source('staging', 'ny_trips_data') }} 
+ from {{ source('staging', 'green_trips_data') }} 
  where vendorid is not null
  {% if var('is_test_run', default=true)%}
     limit 100
