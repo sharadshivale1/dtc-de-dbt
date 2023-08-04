@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: staging
+    database: atlantean-stock-391807
+    schema: trips_data_all
+    tables:
+      - name: fhv_taxi_data
+      - name: ny_trips_data
